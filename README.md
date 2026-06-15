@@ -1,3 +1,11 @@
+# Podman runit healthcheck
+
+A branch of podman (v5.8) with a runit healthcheck service (made with gpt-5.5).
+The option is gated by a Go build tag `runit`.
+The runit healthcheck services are located under each container’s run directory, typically:
+`/run/user/1000/containers/overlay-containers/<container-id>/userdata/healthcheck-runit/`
+
+
 ![PODMAN logo](https://raw.githubusercontent.com/containers/common/main/logos/podman-logo-full-vert.png)
 
 # Podman: A tool for managing OCI containers and pods
