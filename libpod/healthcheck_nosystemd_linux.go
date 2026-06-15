@@ -1,4 +1,4 @@
-//go:build !remote && !systemd
+//go:build !remote && !systemd && !runit
 
 package libpod
 

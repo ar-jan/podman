@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -478,4 +479,19 @@ func (c *Container) healthCheckStatus() (string, error) {
 	}
 
 	return results.Status, nil
+}
+
+// hcUnitName returns the scheduler name for the container healthcheck.
+// Bare indicates that a random suffix should not be applied to the name. This
+// was default behavior previously, and is used for backwards compatibility.
+func (c *Container) hcUnitName(isStartup, bare bool) string {
+	unitName := c.ID()
+	if isStartup {
+		unitName += "-startup"
+	}
+	if !bare {
+		// Ensure scheduler names are unique from run to run.
+		unitName += fmt.Sprintf("-%x", rand.Int())
+	}
+	return unitName
 }

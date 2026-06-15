@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand"
 	"os"
 	"os/exec"
 	"strings"
@@ -175,21 +174,4 @@ func (c *Container) disableHealthCheckSystemd(isStartup bool) bool {
 		return true
 	}
 	return false
-}
-
-// Systemd unit name for the healthcheck systemd unit.
-// Bare indicates that a random suffix should not be applied to the name. This
-// was default behavior previously, and is used for backwards compatibility.
-func (c *Container) hcUnitName(isStartup, bare bool) string {
-	unitName := c.ID()
-	if isStartup {
-		unitName += "-startup"
-	}
-	if !bare {
-		// Ensure that unit names are unique from run to run by appending
-		// a random suffix.
-		// Ref: RH Jira RHEL-26105
-		unitName += fmt.Sprintf("-%x", rand.Int())
-	}
-	return unitName
 }
