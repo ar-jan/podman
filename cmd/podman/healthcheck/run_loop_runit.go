@@ -12,11 +12,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/containers/podman/v5/cmd/podman/common"
+	"github.com/containers/podman/v5/cmd/podman/registry"
+	"github.com/containers/podman/v5/pkg/domain/entities"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"go.podman.io/podman/v6/cmd/podman/common"
-	"go.podman.io/podman/v6/cmd/podman/registry"
-	"go.podman.io/podman/v6/pkg/domain/entities"
 )
 
 const (

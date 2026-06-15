@@ -13,9 +13,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/containers/podman/v5/pkg/errorhandling"
 	"github.com/sirupsen/logrus"
-	"go.podman.io/podman/v6/pkg/errorhandling"
-	"go.podman.io/podman/v6/pkg/specgenutil"
 )
 
 const (
@@ -54,7 +53,10 @@ func (c *Container) createTimer(interval string, isStartup bool) error {
 		return fmt.Errorf("failed to get path for podman for a health check service: %w", err)
 	}
 
-	cmd := append([]string{podman}, specgenutil.GlobalPodmanArgs(c.runtime.storageConfig, c.runtime.config, logrus.IsLevelEnabled(logrus.DebugLevel))...)
+	cmd := []string{podman}
+	if logrus.IsLevelEnabled(logrus.DebugLevel) {
+		cmd = append(cmd, "--log-level=debug", "--syslog")
+	}
 	cmd = append(cmd, "healthcheck", "run-loop", "--interval", interval, "--service-dir", serviceDir, c.ID())
 
 	if err := os.WriteFile(filepath.Join(serviceDir, "run"), []byte(runitRunScript(cmd)), 0o700); err != nil {
